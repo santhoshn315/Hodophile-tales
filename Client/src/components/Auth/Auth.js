@@ -15,21 +15,42 @@ import Icon from "./icon";
 import { useDispatch } from "react-redux";
 import { AUTH } from "../../constants/actoinTypes";
 import { useNavigate } from "react-router-dom";
+import { signin, signup } from "../../actions/auth";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [form, setForm] = useState(initialState);
 
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
   const handleShowPassword = () => setShowPassword(!showPassword);
   const dispatch = useDispatch();
 
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isSignup) {
+      dispatch(signup(form, navigate));
+    } else {
+      dispatch(signin(form, navigate));
+    }
   };
 
   const googleSuccess = async (res) => {
@@ -67,7 +88,7 @@ const Auth = () => {
                   half
                 />
                 <Input
-                  name="LastName"
+                  name="lastName"
                   label="Last Name"
                   handleChange={handleChange}
                   half
