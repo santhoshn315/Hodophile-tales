@@ -4,7 +4,7 @@ const DELETE = "DELETE";
 const FETCH_ALL = "FETCH_ALL";
 const LIKE = "LIKE";
 const SEAECH = "SEAECH";
-
+const FETCH_BY_SEARCH = "FETCH_BY_SEARCH";
 const START_LOADING = "START_LOADING";
 const END_LOADING = "END_LOADING";
 
@@ -32,4 +32,5 @@ export {
   ADD_COMMENT,
   LIGHT,
   DARK,
+  FETCH_BY_SEARCH,
 };

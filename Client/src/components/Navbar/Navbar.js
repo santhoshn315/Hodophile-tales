@@ -56,13 +56,6 @@ const Navbar = () => {
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
-            <Avatar
-              className={classes.purple}
-              alt={user.result.name}
-              src={user.result.imageUrl}
-            >
-              {user.result.name.charAt(0)}
-            </Avatar>
             <Typography className={classes.userName} variant="h6">
               {user.result.name}
             </Typography>
@@ -85,18 +78,18 @@ const Navbar = () => {
             Sign In
           </Button>
         )}
+        <div style={{ marginInlineStart: "1rem" }}>
+          <ToggleButtonGroup color="primary" onChange={handleThemeChange}>
+            <ToggleButton value={themeState}>
+              {themeState === LIGHT ? (
+                <Brightness4Icon color="primary" />
+              ) : (
+                <WbSunnyIcon className={classes.sun} />
+              )}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
       </Toolbar>
-      <div style={{ marginInlineStart: "1rem" }}>
-        <ToggleButtonGroup color="primary" onChange={handleThemeChange}>
-          <ToggleButton value={themeState}>
-            {themeState === LIGHT ? (
-              <Brightness4Icon color="primary" />
-            ) : (
-              <WbSunnyIcon className={classes.sun} />
-            )}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
     </AppBar>
   );
 };
