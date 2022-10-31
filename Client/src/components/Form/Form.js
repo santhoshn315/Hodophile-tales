@@ -1,47 +1,52 @@
 import React, { useState, useEffect } from "react";
-import useStyles from "./Styles";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
-import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
+import FileBase from "react-file-base64";
+import { useNavigate } from "react-router-dom";
+import ChipInput from "material-ui-chip-input";
+
 import { createPost, updatePost } from "../../actions/posts";
+import useStyles from "./Styles";
 
 const Form = ({ currentId, setCurrentId }) => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const post = useSelector((state) =>
-    currentId ? state.posts.find((p) => p._id === currentId) : null
-  );
-
   const [postData, setPostData] = useState({
     title: "",
     message: "",
-    tags: "",
+    tags: [],
     selectedFile: "",
   });
-
-  useEffect(() => {
-    if (post) setPostData({ post });
-  }, [post]);
+  const post = useSelector((state) =>
+    currentId
+      ? state.posts.posts.find((message) => message._id === currentId)
+      : null
+  );
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const navigate = useNavigate();
 
   const clear = () => {
-    setCurrentId(null);
-    setPostData({
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
+    setCurrentId(0);
+    setPostData({ title: "", message: "", tags: [], selectedFile: "" });
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (!post?.title) clear();
+    if (post) setPostData(post);
+  }, [post]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (currentId)
+
+    if (currentId === 0) {
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
+      clear();
+    } else {
       dispatch(
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
-    else dispatch(createPost({ ...postData, name: user?.result?.name }));
-    clear();
+      clear();
+    }
   };
 
   if (!user?.result?.name) {
@@ -54,8 +59,19 @@ const Form = ({ currentId, setCurrentId }) => {
     );
   }
 
+  const handleAddChip = (tag) => {
+    setPostData({ ...postData, tags: [...postData.tags, tag] });
+  };
+
+  const handleDeleteChip = (chipToDelete) => {
+    setPostData({
+      ...postData,
+      tags: postData.tags.filter((tag) => tag !== chipToDelete),
+    });
+  };
+
   return (
-    <Paper>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate
@@ -63,9 +79,8 @@ const Form = ({ currentId, setCurrentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography variant="h6">
-          {currentId ? "Editing" : "Creating"} a memory
+          {currentId ? `Editing "${post?.title}"` : "Creating a Memory"}
         </Typography>
-
         <TextField
           name="title"
           variant="outlined"
@@ -86,16 +101,17 @@ const Form = ({ currentId, setCurrentId }) => {
             setPostData({ ...postData, message: e.target.value })
           }
         />
-        <TextField
-          name="tags"
-          variant="outlined"
-          label="Tags (coma separated)"
-          fullWidth
-          value={postData.tags}
-          onChange={(e) =>
-            setPostData({ ...postData, tags: e.target.value.split(",") })
-          }
-        />
+        <div style={{ padding: "5px 0", width: "94%" }}>
+          <ChipInput
+            name="tags"
+            variant="outlined"
+            label="Tags"
+            fullWidth
+            value={postData.tags}
+            onAdd={(chip) => handleAddChip(chip)}
+            onDelete={(chip) => handleDeleteChip(chip)}
+          />
+        </div>
         <div className={classes.fileInput}>
           <FileBase
             type="file"

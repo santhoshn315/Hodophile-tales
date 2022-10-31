@@ -10,10 +10,10 @@ import {
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import ChipInput from "material-ui-chip-input";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { getPosts ,getPostsBySearch} from "../../actions/posts";
+import { getPostsBySearch } from "../../actions/posts";
 import Pagination from "../Pagination";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -32,10 +32,6 @@ const Home = () => {
 
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
 
   const searchPost = () => {
     if (search.trim() || tags) {
