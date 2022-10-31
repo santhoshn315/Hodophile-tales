@@ -2,10 +2,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
   media: {
+    display: "flex",
     borderRadius: "20px",
     objectFit: "cover",
-    width: "100%",
-    maxHeight: "600px",
+    maxWidth: "700px",
+    maxHeight: "300px",
   },
   card: {
     display: "flex",
@@ -23,7 +24,7 @@ export default makeStyles((theme) => ({
   imageSection: {
     marginLeft: "20px",
     [theme.breakpoints.down("sm")]: {
-      marginLeft: 10,
+      marginLeft: 0,
     },
   },
   recommendedPosts: {
@@ -39,5 +40,14 @@ export default makeStyles((theme) => ({
     padding: "20px",
     borderRadius: "15px",
     height: "39vh",
+  },
+  commentsOuterContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  commentsInnerContainer: {
+    height: "200px",
+    overflowY: "auto",
+    marginRight: "30px",
   },
 }));

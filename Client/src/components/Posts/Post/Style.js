@@ -23,7 +23,7 @@ export default makeStyles({
   },
   overlay: {
     position: "absolute",
-    top: "20px",
+    top: "10px",
     left: "20px",
     color: "white",
   },
@@ -39,7 +39,7 @@ export default makeStyles({
   details: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "20px",
+    margin: "15px",
   },
   title: {
     padding: "0 16px",
