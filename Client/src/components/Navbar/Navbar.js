@@ -49,7 +49,7 @@ const Navbar = () => {
           variant="h2"
           align="center"
         >
-          Hodophile tales
+          Hodophile tales...
         </Typography>
         <img className={classes.image} src={memories} alt="icon" height="60" />
       </div>
